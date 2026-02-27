@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -7,76 +9,108 @@ export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <nav className="glass sticky-nav">
-      <div className="container nav-content">
-        <div className="nav-left">
-          <Link href="/" className="logo-link">
-            <Image
-              src="/image/mainlogo.png"
-              alt="iBLOOV"
-              width={90}
-              height={28}
-              style={{ objectFit: 'contain' }}
-              priority
-            />
-            <span className="beta-badge">BETA</span>
-          </Link>
-          <div className="nav-links desktop-only">
-            <Link href="/" className="nav-link active">Explore</Link>
-            <Link href="/dashboard" className="nav-link">Organize</Link>
+    <>
+      <nav className="sticky-nav">
+        <div className="container nav-content">
+          <div className="nav-left">
+            <Link href="/" className="logo-link">
+              <Image
+                src="/image/mainlogo.png"
+                alt="iBLOOV"
+                width={90}
+                height={28}
+                style={{ objectFit: 'contain' }}
+                priority
+              />
+              <span className="beta-badge">BETA</span>
+            </Link>
+            <div className="nav-links">
+              <Link href="/" className="nav-link active">Explore</Link>
+              <Link href="/dashboard" className="nav-link">Organize</Link>
+            </div>
+          </div>
+
+          <div className="nav-center">
+            <div className="search-pill">
+              <Search size={16} className="search-icon" />
+              <input
+                type="text"
+                placeholder="Search experiences..."
+                className="search-input"
+              />
+            </div>
+          </div>
+
+          <div className="nav-right">
+            <Link href="/signin" className="login-link">Sign In</Link>
+            <Link href="/create" className="button button-primary nav-cta">
+              Create Event
+            </Link>
+            <button
+              className="mobile-burger"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              aria-label="Toggle menu"
+            >
+              {isMenuOpen ? <X size={22} /> : <Menu size={22} />}
+            </button>
           </div>
         </div>
+      </nav>
 
-        <div className="nav-center desktop-only">
-          <div className="search-pill">
-            <Search size={16} className="search-icon" />
-            <input
-              type="text"
-              placeholder="Search experiences..."
-              className="search-input"
-            />
-          </div>
-        </div>
-
-        <div className="nav-right">
-          <Link href="/signin" className="login-link desktop-only">Sign In</Link>
-          <Link href="/create" className="button button-primary nav-cta">
-            Create Event
-          </Link>
-          <button
-            className="mobile-menu mobile-only"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            aria-label="Toggle menu"
-          >
-            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
-        </div>
-      </div>
+      {/* Mobile Overlay */}
+      {isMenuOpen && (
+        <div className="mobile-overlay" onClick={() => setIsMenuOpen(false)} />
+      )}
 
       {/* Mobile Menu Tray */}
-      <div className={`mobile-tray glass ${isMenuOpen ? 'open' : ''}`}>
-        <div className="tray-content">
-          <Link href="/" className="tray-link active" onClick={() => setIsMenuOpen(false)}>Explore</Link>
-          <Link href="/dashboard" className="tray-link" onClick={() => setIsMenuOpen(false)}>Organize</Link>
-          <Link href="/signin" className="tray-link" onClick={() => setIsMenuOpen(false)}>Sign In</Link>
-          <div className="tray-divider"></div>
-          <Link href="/create" className="button button-primary tray-cta" onClick={() => setIsMenuOpen(false)}>
+      <div className={`mobile-tray ${isMenuOpen ? 'open' : ''}`}>
+        <div className="tray-search">
+          <Search size={16} className="tray-search-icon" />
+          <input
+            type="text"
+            placeholder="Search experiences..."
+            className="tray-search-input"
+          />
+        </div>
+
+        <div className="tray-links">
+          <Link href="/" className="tray-link active" onClick={() => setIsMenuOpen(false)}>
+            Explore
+          </Link>
+          <Link href="/dashboard" className="tray-link" onClick={() => setIsMenuOpen(false)}>
+            Organize
+          </Link>
+          <Link href="/signin" className="tray-link" onClick={() => setIsMenuOpen(false)}>
+            Sign In
+          </Link>
+        </div>
+
+        <div className="tray-bottom">
+          <Link
+            href="/create"
+            className="button button-primary tray-cta"
+            onClick={() => setIsMenuOpen(false)}
+          >
             Create Your First Event
           </Link>
         </div>
       </div>
 
       <style jsx>{`
+        /* ===== NAVBAR BAR ===== */
         .sticky-nav {
           position: fixed;
           top: 0;
           left: 0;
           right: 0;
           z-index: 1000;
-          height: 72px;
+          height: 64px;
           display: flex;
           align-items: center;
-          border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+          background: rgba(255, 255, 255, 0.85);
+          backdrop-filter: blur(16px);
+          -webkit-backdrop-filter: blur(16px);
+          border-bottom: 1px solid rgba(0, 0, 0, 0.06);
         }
         .nav-content {
           display: flex;
@@ -92,43 +126,47 @@ export default function Navbar() {
         .logo-link {
           display: flex;
           align-items: center;
-          gap: 0.75rem;
+          gap: 0.6rem;
+          text-decoration: none;
         }
         .beta-badge {
-          background: var(--accent-glow);
-          color: var(--accent);
-          font-size: 0.6rem;
+          background: #FFF3D6;
+          color: #D4880F;
+          font-size: 0.55rem;
           font-weight: 800;
-          padding: 2px 6px;
-          border-radius: 4px;
-          letter-spacing: 0.05em;
+          padding: 2px 5px;
+          border-radius: 3px;
+          letter-spacing: 0.04em;
         }
         .nav-links {
           display: flex;
           gap: 1.5rem;
         }
         .nav-link {
-          font-size: 0.95rem;
+          font-size: 0.9rem;
           font-weight: 600;
-          color: var(--foreground-muted);
+          color: #64748b;
           transition: color 0.2s ease;
           font-family: var(--font-heading);
+          text-decoration: none;
         }
-        .nav-link:hover, .nav-link.active {
+        :global(.nav-link:hover), :global(.nav-link.active) {
           color: var(--primary);
         }
-        
+
+        /* ===== SEARCH ===== */
         .nav-center {
           flex: 1;
           display: flex;
           justify-content: center;
-          max-width: 400px;
+          max-width: 360px;
+          margin: 0 2rem;
         }
         .search-pill {
           display: flex;
           align-items: center;
-          background: var(--muted);
-          border: 1px solid var(--border);
+          background: #f1f5f9;
+          border: 1px solid #e2e8f0;
           border-radius: 99px;
           padding: 0.4rem 1rem;
           width: 100%;
@@ -137,110 +175,179 @@ export default function Navbar() {
         .search-pill:focus-within {
           background: white;
           border-color: var(--primary);
-          box-shadow: 0 0 0 4px var(--primary-glow);
+          box-shadow: 0 0 0 3px rgba(0, 0, 210, 0.08);
         }
-        .search-icon {
-          color: var(--foreground-muted);
+        :global(.search-icon) {
+          color: #94a3b8;
           margin-right: 0.5rem;
+          flex-shrink: 0;
         }
         .search-input {
           background: transparent;
           border: none;
           outline: none;
           width: 100%;
-          font-size: 0.9rem;
-          color: var(--foreground);
+          font-size: 0.85rem;
+          color: #1e293b;
           font-family: var(--font-body);
         }
 
+        /* ===== NAV RIGHT ===== */
         .nav-right {
           display: flex;
           align-items: center;
-          gap: 1.5rem;
+          gap: 1.25rem;
         }
         .login-link {
-          font-size: 0.95rem;
+          font-size: 0.9rem;
           font-weight: 600;
-          color: var(--foreground);
+          color: #1e293b;
           font-family: var(--font-heading);
+          text-decoration: none;
+          transition: color 0.2s ease;
+        }
+        .login-link:hover {
+          color: var(--primary);
         }
         .nav-cta {
-          padding: 0.6rem 1.25rem;
-          font-size: 0.9rem;
+          padding: 0.55rem 1.15rem;
+          font-size: 0.85rem;
+          white-space: nowrap;
         }
 
-        .mobile-menu {
-           display: none;
-           background: transparent;
-           border: none;
-           cursor: pointer;
-           padding: 4px;
-           color: var(--foreground);
-           z-index: 1001;
+        /* ===== BURGER (hidden by default, shown on mobile) ===== */
+        .mobile-burger {
+          display: none;
+          align-items: center;
+          justify-content: center;
+          background: transparent;
+          border: none;
+          cursor: pointer;
+          padding: 6px;
+          color: #1e293b;
+          border-radius: 8px;
+          transition: background 0.2s ease;
+        }
+        .mobile-burger:hover {
+          background: #f1f5f9;
         }
 
+        /* ===== MOBILE OVERLAY ===== */
+        :global(.mobile-overlay) {
+          position: fixed;
+          inset: 0;
+          background: rgba(0, 0, 0, 0.3);
+          z-index: 998;
+          animation: fadeIn 0.2s ease;
+        }
+        @keyframes fadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+
+        /* ===== MOBILE TRAY ===== */
         .mobile-tray {
           position: fixed;
-          top: 72px;
+          top: 64px;
           left: 0;
           right: 0;
-          height: calc(100vh - 72px);
-          background: rgba(255, 255, 255, 0.95);
-          backdrop-filter: blur(20px);
+          background: white;
           z-index: 999;
-          display: flex;
+          display: none;
           flex-direction: column;
-          padding: 2rem;
-          transform: translateY(-100%);
+          padding: 1.5rem 1.25rem 2rem;
+          border-bottom: 1px solid #e2e8f0;
+          box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+          transform: translateY(-8px);
           opacity: 0;
-          visibility: hidden;
-          transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+          transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                      opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .mobile-tray.open {
           transform: translateY(0);
           opacity: 1;
-          visibility: visible;
         }
-        .tray-content {
+
+        .tray-search {
+          display: flex;
+          align-items: center;
+          background: #f8fafc;
+          border: 1px solid #e2e8f0;
+          border-radius: 12px;
+          padding: 0.7rem 1rem;
+          margin-bottom: 1.5rem;
+        }
+        :global(.tray-search-icon) {
+          color: #94a3b8;
+          margin-right: 0.6rem;
+          flex-shrink: 0;
+        }
+        .tray-search-input {
+          background: transparent;
+          border: none;
+          outline: none;
+          width: 100%;
+          font-size: 0.95rem;
+          color: #1e293b;
+          font-family: var(--font-body);
+        }
+
+        .tray-links {
           display: flex;
           flex-direction: column;
-          gap: 1.5rem;
-          margin-top: 2rem;
+          gap: 0;
         }
-        .tray-link {
-          font-size: 1.5rem;
-          font-weight: 700;
-          color: var(--foreground);
+        :global(.tray-link) {
+          font-size: 1.05rem;
+          font-weight: 600;
+          color: #334155;
           text-decoration: none;
           font-family: var(--font-heading);
+          padding: 0.85rem 0;
+          border-bottom: 1px solid #f1f5f9;
           transition: color 0.2s ease;
         }
-        .tray-link:hover, .tray-link.active {
+        :global(.tray-link:last-child) {
+          border-bottom: none;
+        }
+        :global(.tray-link:hover), :global(.tray-link.active) {
           color: var(--primary);
         }
-        .tray-divider {
-          height: 1px;
-          background: var(--border);
-          margin: 1rem 0;
+
+        .tray-bottom {
+          margin-top: 1.5rem;
         }
-        .tray-cta {
-          padding: 1rem;
+        :global(.tray-cta) {
+          display: block;
+          width: 100%;
+          padding: 0.85rem;
           text-align: center;
-          font-size: 1rem;
+          font-size: 0.95rem;
+          border-radius: 12px;
         }
 
-        .desktop-only { display: flex; }
-        .mobile-only { display: none; }
-
-        @media (max-width: 1024px) {
-          .nav-center, .nav-links, .login-link {
-            display: none;
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+          .nav-links,
+          .nav-center,
+          .login-link,
+          .nav-cta {
+            display: none !important;
           }
-          .mobile-menu, .mobile-only {
+          .mobile-burger {
+            display: flex;
+          }
+          .mobile-tray {
             display: flex;
           }
         }
+
+        @media (min-width: 769px) and (max-width: 1024px) {
+          .nav-center {
+            display: none;
+          }
+        }
       `}</style>
-    </nav>
+    </>
   );
 }
