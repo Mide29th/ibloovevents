@@ -1,10 +1,11 @@
-'use client';
-
+import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Search } from 'lucide-react';
+import { Search, X, Menu } from 'lucide-react';
 
 export default function Navbar() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
   return (
     <nav className="glass sticky-nav">
       <div className="container nav-content">
@@ -42,10 +43,26 @@ export default function Navbar() {
           <Link href="/create" className="button button-primary nav-cta">
             Create Event
           </Link>
-          <button className="mobile-menu mobile-only">
-            <span className="burger-line"></span>
-            <span className="burger-line"></span>
+          <button
+            className="mobile-menu mobile-only"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            aria-label="Toggle menu"
+          >
+            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
+        </div>
+      </div>
+
+      {/* Mobile Menu Tray */}
+      <div className={`mobile-tray glass ${isMenuOpen ? 'open' : ''}`}>
+        <div className="tray-content">
+          <Link href="/" className="tray-link active" onClick={() => setIsMenuOpen(false)}>Explore</Link>
+          <Link href="/dashboard" className="tray-link" onClick={() => setIsMenuOpen(false)}>Organize</Link>
+          <Link href="/signin" className="tray-link" onClick={() => setIsMenuOpen(false)}>Sign In</Link>
+          <div className="tray-divider"></div>
+          <Link href="/create" className="button button-primary tray-cta" onClick={() => setIsMenuOpen(false)}>
+            Create Your First Event
+          </Link>
         </div>
       </div>
 
@@ -154,18 +171,62 @@ export default function Navbar() {
 
         .mobile-menu {
            display: none;
-           flex-direction: column;
-           gap: 6px;
            background: transparent;
            border: none;
            cursor: pointer;
            padding: 4px;
+           color: var(--foreground);
+           z-index: 1001;
         }
-        .burger-line {
-           width: 24px;
-           height: 2px;
-           background: var(--foreground);
-           border-radius: 2px;
+
+        .mobile-tray {
+          position: fixed;
+          top: 72px;
+          left: 0;
+          right: 0;
+          height: calc(100vh - 72px);
+          background: rgba(255, 255, 255, 0.95);
+          backdrop-filter: blur(20px);
+          z-index: 999;
+          display: flex;
+          flex-direction: column;
+          padding: 2rem;
+          transform: translateY(-100%);
+          opacity: 0;
+          visibility: hidden;
+          transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .mobile-tray.open {
+          transform: translateY(0);
+          opacity: 1;
+          visibility: visible;
+        }
+        .tray-content {
+          display: flex;
+          flex-direction: column;
+          gap: 1.5rem;
+          margin-top: 2rem;
+        }
+        .tray-link {
+          font-size: 1.5rem;
+          font-weight: 700;
+          color: var(--foreground);
+          text-decoration: none;
+          font-family: var(--font-heading);
+          transition: color 0.2s ease;
+        }
+        .tray-link:hover, .tray-link.active {
+          color: var(--primary);
+        }
+        .tray-divider {
+          height: 1px;
+          background: var(--border);
+          margin: 1rem 0;
+        }
+        .tray-cta {
+          padding: 1rem;
+          text-align: center;
+          font-size: 1rem;
         }
 
         .desktop-only { display: flex; }
