@@ -36,25 +36,35 @@ export default function EventCard({
             className="event-image"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           />
-          <div className="date-badge">{date}</div>
-          <div className="price-pill">{typeof price === 'number' ? `₦${price.toLocaleString()}` : price}</div>
+          <div className="card-top-row">
+            <div className="date-badge">{date}</div>
+            {isVerified && (
+              <div className="verified-pill">
+                <BadgeCheck size={14} />
+                <span>Verified</span>
+              </div>
+            )}
+          </div>
+          <div className="price-pill">
+            {typeof price === 'number' ? `₦${price.toLocaleString()}` : price}
+          </div>
         </div>
 
         <div className="card-content">
           <h3 className="event-title">{title}</h3>
-          <div className="host-info">
-            <span>Hosted by {host}</span>
-            {isVerified && <BadgeCheck size={14} className="verified-icon" />}
-          </div>
+          <p className="event-host">by {host}</p>
 
           <div className="event-footer">
-            <div className="attendee-pile">
+            <div className="attendee-group">
               <div className="avatars">
                 {[1, 2, 3].map(i => (
-                  <div key={i} className="avatar-small" />
+                  <div key={i} className="avatar-circle" />
                 ))}
               </div>
-              <span className="attendee-count">{attendees}+ going</span>
+              <span className="attendee-text">{attendees}+ vibing</span>
+            </div>
+            <div className="card-action">
+              <span className="action-dot"></span>
             </div>
           </div>
         </div>
@@ -66,111 +76,141 @@ export default function EventCard({
             color: inherit;
           }
           .event-card {
-            background: var(--background);
-            border-radius: 16px;
+            background: white;
+            border-radius: var(--radius-md);
             overflow: hidden;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             border: 1px solid var(--border);
+            position: relative;
           }
           .event-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 32px rgba(0, 0, 210, 0.1);
-            border-color: rgba(0, 0, 210, 0.15);
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-premium);
+            border-color: var(--primary-glow);
           }
           .image-container {
             position: relative;
-            aspect-ratio: 1/1;
+            aspect-ratio: 4/3;
             overflow: hidden;
+            background: var(--muted);
           }
           .event-image {
-            width: 100%;
-            height: 100%;
             object-fit: cover;
-            transition: transform 0.5s ease;
+            transition: transform 0.6s ease;
           }
           .event-card:hover .event-image {
-            transform: scale(1.05);
+            transform: scale(1.1);
+          }
+          .card-top-row {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            right: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
           }
           .date-badge {
-            position: absolute;
-            top: 12px;
-            left: 12px;
             background: white;
-            color: var(--primary);
-            padding: 5px 12px;
-            border-radius: 8px;
+            color: var(--foreground);
+            padding: 0.4rem 0.8rem;
+            border-radius: var(--radius-sm);
             font-size: 0.75rem;
             font-weight: 700;
-            box-shadow: 0 4px 12px rgba(0, 0, 210, 0.12);
+            box-shadow: var(--shadow-md);
             font-family: var(--font-heading);
-            letter-spacing: 0.02em;
+          }
+          .verified-pill {
+            background: var(--primary);
+            color: white;
+            padding: 0.35rem 0.75rem;
+            border-radius: 99px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 210, 0.2);
           }
           .price-pill {
             position: absolute;
-            bottom: 12px;
-            right: 12px;
-            background: var(--primary);
+            bottom: 1rem;
+            right: 1rem;
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(8px);
             color: white;
-            padding: 5px 14px;
-            border-radius: 99px;
-            font-size: 0.8rem;
+            padding: 0.4rem 0.9rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.85rem;
             font-weight: 700;
-            backdrop-filter: blur(4px);
             font-family: var(--font-heading);
           }
           .card-content {
-            padding: 1rem 0.75rem;
+            padding: 1.5rem;
           }
           .event-title {
-            font-size: 1.1rem;
-            margin-bottom: 0.4rem;
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+            color: var(--foreground);
+            font-family: var(--font-heading);
             display: -webkit-box;
-            -webkit-line-clamp: 2;
+            -webkit-line-clamp: 1;
             -webkit-box-orient: vertical;
             overflow: hidden;
-            font-family: var(--font-heading);
           }
-          .host-info {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            font-size: 0.85rem;
-            color: var(--secondary);
-            margin-bottom: 1rem;
-          }
-          .verified-icon {
-            color: var(--primary);
+          .event-host {
+            font-size: 0.9rem;
+            color: var(--foreground-muted);
+            margin-bottom: 1.5rem;
+            font-family: var(--font-body);
           }
           .event-footer {
             display: flex;
             align-items: center;
             justify-content: space-between;
           }
-          .attendee-pile {
+          .attendee-group {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 0.75rem;
           }
           .avatars {
             display: flex;
-            margin-left: 4px;
           }
-          .avatar-small {
-            width: 20px;
-            height: 20px;
+          .avatar-circle {
+            width: 24px;
+            height: 24px;
             border-radius: 50%;
-            background: var(--accent-soft);
+            background: #e2e8f0;
             border: 2px solid white;
-            margin-left: -6px;
+            margin-left: -8px;
           }
-          .avatar-small:first-child {
-            margin-left: 0;
-          }
-          .attendee-count {
-            font-size: 0.8rem;
-            color: var(--secondary);
+          .avatar-circle:first-child { margin-left: 0; }
+          .attendee-text {
+            font-size: 0.85rem;
+            color: var(--foreground-muted);
             font-weight: 500;
+          }
+          .card-action {
+             width: 12px;
+             height: 12px;
+             display: flex;
+             align-items: center;
+             justify-content: center;
+          }
+          .action-dot {
+             width: 6px;
+             height: 6px;
+             background: var(--border);
+             border-radius: 50%;
+             transition: all 0.3s ease;
+          }
+          .event-card:hover .action-dot {
+             background: var(--primary);
+             box-shadow: 0 0 8px var(--primary);
+             transform: scale(2);
           }
         `}</style>
       </div>

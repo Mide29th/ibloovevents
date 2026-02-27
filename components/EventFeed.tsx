@@ -66,13 +66,11 @@ export default function EventFeed() {
   const [events, setEvents] = useState(mockEvents);
 
   useEffect(() => {
-    // Merge mock events with user created events from storage
     const userEvents = JSON.parse(localStorage.getItem('user_events') || '[]');
-    // Map user events to match feed structure
     const mappedUserEvents = userEvents.map((e: any) => ({
       ...e,
       date: e.displayDate,
-      image: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&q=80&w=800", // Default event image
+      image: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&q=80&w=800",
       price: e.price || 'Free'
     }));
 
@@ -83,12 +81,15 @@ export default function EventFeed() {
     <section className="feed-section">
       <div className="container">
         <div className="feed-header">
-          <h2 className="section-title">Discover Events</h2>
+          <div className="header-left">
+            <h2 className="section-title">Discover Experiences</h2>
+            <p className="section-subtitle">Handpicked events for you in Lagos & beyond.</p>
+          </div>
           <div className="filters">
-            <span className="filter-pill active">All</span>
-            <span className="filter-pill">Music</span>
-            <span className="filter-pill">Parties</span>
-            <span className="filter-pill">Workshops</span>
+            <button className="filter-chip active">All</button>
+            <button className="filter-chip">Music</button>
+            <button className="filter-chip">Parties</button>
+            <button className="filter-chip">Workshops</button>
           </div>
         </div>
 
@@ -97,64 +98,76 @@ export default function EventFeed() {
             <EventCard key={event.id} {...event} />
           ))}
         </div>
+
+        <div className="feed-footer">
+          <button className="button button-outline view-more">View All Events</button>
+        </div>
       </div>
 
       <style jsx>{`
         .feed-section {
-          padding: 4rem 0;
+          padding: 6rem 0;
+          background: white;
         }
         .feed-header {
           display: flex;
-          align-items: center;
+          align-items: flex-end;
           justify-content: space-between;
-          margin-bottom: 2rem;
+          margin-bottom: 3.5rem;
+          gap: 2rem;
         }
         .section-title {
-          font-size: 1.5rem;
-          font-weight: 700;
+          font-size: 2rem;
+          font-weight: 800;
           font-family: var(--font-heading);
-          position: relative;
+          color: var(--foreground);
+          margin-bottom: 0.5rem;
         }
-        .section-title::after {
-          content: '';
-          position: absolute;
-          bottom: -6px;
-          left: 0;
-          width: 40px;
-          height: 3px;
-          background: var(--accent);
-          border-radius: 2px;
+        .section-subtitle {
+          color: var(--foreground-muted);
+          font-size: 1.1rem;
+          font-family: var(--font-body);
         }
         .filters {
           display: flex;
-          gap: 0.75rem;
-        }
-        .filter-pill {
-          padding: 0.5rem 1.25rem;
+          gap: 0.5rem;
+          padding: 4px;
+          background: var(--muted);
           border-radius: 99px;
-          font-size: 0.85rem;
+          border: 1px solid var(--border);
+        }
+        .filter-chip {
+          padding: 0.6rem 1.25rem;
+          border-radius: 99px;
+          font-size: 0.9rem;
           font-weight: 600;
           cursor: pointer;
-          background: var(--muted);
-          color: var(--secondary);
-          border: 1px solid var(--border);
+          border: none;
+          background: transparent;
+          color: var(--foreground-muted);
           transition: all 0.2s ease;
           font-family: var(--font-heading);
         }
-        .filter-pill:hover {
-          background: rgba(0, 0, 210, 0.05);
-          color: var(--primary);
-          border-color: rgba(0, 0, 210, 0.2);
+        .filter-chip:hover {
+          color: var(--foreground);
         }
-        .filter-pill.active {
-          background: var(--primary);
-          color: #ffffff;
-          border-color: var(--primary);
+        .filter-chip.active {
+          background: white;
+          color: var(--primary);
+          box-shadow: var(--shadow-sm);
         }
         .event-grid {
           display: grid;
           grid-template-columns: repeat(1, 1fr);
-          gap: 2rem;
+          gap: 2.5rem;
+        }
+        .feed-footer {
+          margin-top: 4rem;
+          display: flex;
+          justify-content: center;
+        }
+        .view-more {
+          min-width: 200px;
         }
 
         @media (min-width: 640px) {
@@ -164,16 +177,14 @@ export default function EventFeed() {
           .event-grid { grid-template-columns: repeat(3, 1fr); }
         }
         
-        @media (max-width: 640px) {
+        @media (max-width: 840px) {
           .feed-header {
             flex-direction: column;
             align-items: flex-start;
-            gap: 1rem;
           }
           .filters {
             width: 100%;
             overflow-x: auto;
-            padding-bottom: 0.5rem;
             scrollbar-width: none;
           }
           .filters::-webkit-scrollbar {

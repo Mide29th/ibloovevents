@@ -1,31 +1,41 @@
-/* ========================================
-   iBLOOV Brand Identity Design System
-   ======================================== */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap');
 
 :root {
   /* Brand Colors */
   --primary: #0000D2;
-  /* Electric Blue — headers, CTAs */
+  /* Electric Blue */
+  --primary-glow: rgba(0, 0, 210, 0.15);
   --accent: #F1A000;
-  /* Vibrant Amber — smiley, highlights */
+  /* Vibrant Amber */
+  --accent-glow: rgba(241, 160, 0, 0.2);
   --secondary-blue: #000080;
-  /* Deep Navy — depth, professionalism */
-  --accent-soft: #FFB84D;
-  /* Soft Amber — hover, gradients */
-  --foreground: #1A1A1A;
-  /* Charcoal — text, strong contrast */
-  --secondary: #9E9E9E;
-  /* Cool Gray — supporting text */
+  /* Deep Navy */
 
-  /* Surfaces & Borders */
-  --background: #ffffff;
-  --muted: #F5F7FA;
-  --border: #E5E7EB;
-  --radius: 12px;
+  /* Modern Neutral Palette */
+  --foreground: #0F172A;
+  --foreground-muted: #64748B;
+  --background: #FFFFFF;
+  --muted: #F8FAFC;
+  --border: #E2E8F0;
+  --border-hover: #CBD5E1;
+
+  /* Gradients */
+  --grad-primary: linear-gradient(135deg, #0000D2 0%, #000080 100%);
+  --grad-surface: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(248, 250, 252, 1) 100%);
+  --grad-glass: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.7) 100%);
+
+  /* Effects */
+  --radius-lg: 24px;
+  --radius-md: 16px;
+  --radius-sm: 8px;
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-premium: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  --shadow-blue: 0 10px 30px -10px rgba(0, 0, 210, 0.3);
 
   /* Typography */
-  --font-heading: 'Montserrat', sans-serif;
-  --font-body: 'Open Sans', sans-serif;
+  --font-heading: 'Outfit', sans-serif;
+  --font-body: 'Inter', sans-serif;
 }
 
 * {
@@ -54,72 +64,74 @@ ul {
   list-style: none;
 }
 
-/* Glassmorphism — Blue tinted */
+/* Glassmorphism — Refined */
 .glass {
-  background: rgba(255, 255, 255, 0.92);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(0, 0, 210, 0.06);
+  background: var(--grad-glass);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: var(--shadow-md);
 }
 
 .footer-glass {
-  background: rgba(26, 26, 26, 0.8);
-  backdrop-filter: blur(16px) saturate(180%);
-  -webkit-backdrop-filter: blur(16px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-  border-radius: 24px;
-  margin: 2rem;
+  background: rgba(15, 23, 42, 0.85);
+  /* Deep slate */
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: var(--shadow-premium);
+  border-radius: var(--radius-lg);
+  margin: 4rem 2rem 2rem;
 }
 
 /* Layout utilities */
 .container {
-  max-width: 1200px;
+  max-width: 1280px;
   margin: 0 auto;
-  padding: 0 1.5rem;
+  padding: 0 2rem;
 }
 
 .button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0.75rem 1.5rem;
+  padding: 0.875rem 1.75rem;
   border-radius: 9999px;
   font-weight: 600;
   font-family: var(--font-heading);
   cursor: pointer;
-  transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   border: none;
-  font-size: 0.95rem;
+  font-size: 1rem;
+  letter-spacing: -0.01em;
 }
 
 .button-primary {
   background: var(--primary);
   color: #ffffff;
+  box-shadow: var(--shadow-blue);
 }
 
 .button:active {
-  transform: scale(0.98);
+  transform: scale(0.96);
 }
 
 .button-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(0, 0, 210, 0.25);
   background: #0000B8;
-}
-
-.button-primary:active {
-  transform: translateY(0) scale(0.98);
+  box-shadow: 0 12px 24px -6px rgba(0, 0, 210, 0.4);
 }
 
 .button-outline {
   background: transparent;
-  border: 1.5px solid var(--primary);
-  color: var(--primary);
+  border: 2px solid var(--border);
+  color: var(--foreground);
 }
 
 .button-outline:hover {
-  background: rgba(0, 0, 210, 0.05);
+  border-color: var(--primary);
+  color: var(--primary);
+  background: var(--primary-glow);
 }
 
 /* Typography */

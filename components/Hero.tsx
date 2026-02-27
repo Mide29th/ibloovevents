@@ -6,7 +6,7 @@ import Link from 'next/link';
 
 const CITIES = [
   "Lagos",
-  "Òṣogbo",
+  "Òsogbo",
   "Port Harcourt",
   "Abuja",
   "Ibadan",
@@ -53,8 +53,8 @@ export default function Hero() {
 
   useEffect(() => {
     const currentCity = CITIES[cityIndex];
-    const typeSpeed = isDeleting ? 50 : 150;
-    const pauseTime = 2000;
+    const typeSpeed = isDeleting ? 40 : 100;
+    const pauseTime = 2500;
 
     const initialTimeout = setTimeout(() => {
       if (!isDeleting && displayText === currentCity) {
@@ -75,65 +75,150 @@ export default function Hero() {
 
   return (
     <section className="hero">
-      <div className="container">
-        <div className="hero-header">
+      <div className="hero-background">
+        <div className="blob blob-1"></div>
+        <div className="blob blob-2"></div>
+      </div>
+
+      <div className="container hero-container">
+        <div className="hero-content">
+          <div className="hero-badge">
+            <span className="badge-dot"></span>
+            The #1 Event Platform in Africa
+          </div>
+
           <h1 className="hero-title">
-            Events worth your time <br />
-            in <span className="highlight">{displayText}</span><span className="cursor">|</span>.
+            Delightful events <br />
+            <span>start </span>
+            <span className="text-amber">{displayText}</span>
+            <span className="cursor">|</span>
           </h1>
-          <div className="organizer-cta">
-            <p>Hosting something? Manage guest lists, tickets, and vibes.</p>
-            <a href="/create" className="cta-link">
-              Start Free <ArrowRight size={16} />
-            </a>
+
+          <p className="hero-description">
+            Set up an event page, invite friends and sell tickets.
+            Host a memorable event today with iBLOOV.
+          </p>
+
+          <div className="hero-actions">
+            <Link href="/create" className="button button-primary">
+              Create Your First Event
+            </Link>
+            <Link href="/signin" className="button button-outline">
+              Sign In
+            </Link>
+          </div>
+
+          <div className="hero-stats">
+            <div className="stat-item">
+              <strong>50k+</strong>
+              <span>Tickets Sold</span>
+            </div>
+            <div className="stat-divider"></div>
+            <div className="stat-item">
+              <strong>1200+</strong>
+              <span>Organizers</span>
+            </div>
           </div>
         </div>
 
-        <div className="featured-carousel">
-          {mockFeaturedEvents.map((event) => (
-            <Link key={event.id} href={`/events/${event.id}`}>
-              <div className="featured-card">
-                <div className="card-image-wrapper">
-                  <img
-                    src={event.image}
-                    alt={event.title}
-                    className="card-image"
-                  />
-                  <div className="card-overlay">
-                    <span className="card-date">{event.date}</span>
-                    <h3 className="card-title">{event.title}</h3>
-                  </div>
-                </div>
-              </div>
-            </Link>
-          ))}
+        <div className="hero-visual">
+          <div className="visual-card main-card">
+            <div className="card-mock-img"></div>
+            <div className="card-mock-content">
+              <div className="mock-title">Afrobeat Night Out</div>
+              <div className="mock-details">Eko Hotel • Dec 20, 2026</div>
+            </div>
+          </div>
+          <div className="visual-card secondary-card card-1"></div>
+          <div className="visual-card secondary-card card-2"></div>
         </div>
       </div>
 
       <style jsx>{`
         .hero {
-          padding: 4rem 0 2rem;
+          position: relative;
+          padding: 8rem 0 6rem;
+          overflow: hidden;
+          background: var(--grad-surface);
         }
-        .hero-header {
-          margin-bottom: 3rem;
-          text-align: center;
+        .hero-background {
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          z-index: 0;
+          opacity: 0.6;
+        }
+        .blob {
+          position: absolute;
+          width: 500px;
+          height: 500px;
+          border-radius: 50%;
+          filter: blur(80px);
+          animation: float 20s infinite alternate;
+        }
+        .blob-1 {
+          background: var(--primary-glow);
+          top: -100px;
+          left: -100px;
+        }
+        .blob-2 {
+          background: var(--accent-glow);
+          bottom: -150px;
+          right: -100px;
+          animation-delay: -5s;
+        }
+        @keyframes float {
+          0% { transform: translate(0, 0) scale(1); }
+          100% { transform: translate(100px, 50px) scale(1.1); }
+        }
+
+        .hero-container {
+          position: relative;
+          z-index: 1;
+          display: grid;
+          grid-template-columns: 1.2fr 1fr;
+          gap: 4rem;
+          align-items: center;
+        }
+        .hero-content {
+          text-align: left;
+        }
+        .hero-badge {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.75rem;
+          background: white;
+          padding: 0.5rem 1rem;
+          border-radius: 99px;
+          font-size: 0.85rem;
+          font-weight: 600;
+          border: 1px solid var(--border);
+          box-shadow: var(--shadow-sm);
+          margin-bottom: 2rem;
+          color: var(--foreground-muted);
+        }
+        .badge-dot {
+          width: 8px;
+          height: 8px;
+          background: var(--primary);
+          border-radius: 50%;
+          box-shadow: 0 0 10px var(--primary);
         }
         .hero-title {
-          font-size: 3.5rem;
-          line-height: 1.1;
+          font-size: clamp(3rem, 5vw, 4.5rem);
+          line-height: 1.05;
           margin-bottom: 1.5rem;
-          font-family: var(--font-heading);
+          font-weight: 800;
+          color: var(--foreground);
         }
-        .highlight {
+        .text-amber {
           color: var(--accent);
-          text-decoration: underline;
-          text-decoration-color: var(--accent);
-          text-decoration-thickness: 3px;
-          text-underline-offset: 8px;
+          text-shadow: 0 0 20px var(--accent-glow);
         }
         .cursor {
           display: inline-block;
-          font-weight: 100;
           color: var(--accent);
           animation: blink 1s step-end infinite;
         }
@@ -141,101 +226,152 @@ export default function Hero() {
           0%, 100% { opacity: 1; }
           50% { opacity: 0; }
         }
-        .organizer-cta {
+        .hero-description {
+          font-size: 1.25rem;
+          color: var(--foreground-muted);
+          line-height: 1.6;
+          margin-bottom: 2.5rem;
+          max-width: 540px;
+          font-family: var(--font-body);
+        }
+        .hero-actions {
+          display: flex;
+          gap: 1rem;
+          margin-bottom: 3rem;
+        }
+        .hero-stats {
+          display: flex;
+          align-items: center;
+          gap: 2rem;
+          padding-top: 2rem;
+          border-top: 1px solid var(--border);
+        }
+        .stat-item {
+          display: flex;
+          flex-direction: column;
+        }
+        .stat-item strong {
+          font-size: 1.5rem;
+          font-family: var(--font-heading);
+          color: var(--foreground);
+        }
+        .stat-item span {
+          font-size: 0.9rem;
+          color: var(--foreground-muted);
+        }
+        .stat-divider {
+          width: 1px;
+          height: 32px;
+          background: var(--border);
+        }
+
+        .hero-visual {
+          position: relative;
+          height: 500px;
           display: flex;
           align-items: center;
           justify-content: center;
-          gap: 0.75rem;
-          font-size: 0.95rem;
-          color: var(--secondary);
         }
-        .cta-link {
+        .visual-card {
+          background: white;
+          border-radius: var(--radius-md);
+          box-shadow: var(--shadow-premium);
+          border: 1px solid var(--border);
+          position: absolute;
+          overflow: hidden;
+        }
+        .main-card {
+          width: 320px;
+          height: 420px;
+          z-index: 3;
+          transform: rotate(-2deg);
+          transition: all 0.5s ease;
+        }
+        .main-card:hover {
+          transform: rotate(0deg) scale(1.02);
+        }
+        .card-mock-img {
+          height: 70%;
+          background: var(--grad-primary);
+          opacity: 0.9;
+          position: relative;
+        }
+        .card-mock-img::after {
+          content: '★';
+          position: absolute;
+          inset: 0;
           display: flex;
           align-items: center;
-          gap: 0.35rem;
-          color: var(--primary);
-          font-weight: 700;
-          font-family: var(--font-heading);
-          border-bottom: 2px solid var(--primary);
-          padding-bottom: 2px;
-          transition: color 0.2s, border-color 0.2s;
-        }
-        .cta-link:hover {
-          color: var(--accent);
-          border-color: var(--accent);
-        }
-        
-        .featured-carousel {
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 1.5rem;
-          margin-top: 2rem;
-          overflow-x: auto;
-          scrollbar-width: none;
-          padding-bottom: 1rem;
-        }
-        .featured-carousel::-webkit-scrollbar {
-          display: none;
-        }
-        .featured-card {
-           position: relative;
-           border-radius: 20px;
-           overflow: hidden;
-           aspect-ratio: 16/9;
-           cursor: pointer;
-           transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        .featured-card:hover {
-          transform: scale(1.02);
-          box-shadow: 0 12px 32px rgba(0, 0, 210, 0.12);
-        }
-        .card-image-wrapper {
-          width: 100%;
-          height: 100%;
-        }
-        .card-image {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-        }
-        .card-overlay {
-          position: absolute;
-          bottom: 0;
-          left: 0;
-          right: 0;
-          padding: 2rem;
-          background: linear-gradient(transparent, rgba(0, 0, 128, 0.75));
+          justify-content: center;
+          font-size: 4rem;
           color: white;
-          display: flex;
-          flex-direction: column;
-          gap: 0.5rem;
+          opacity: 0.2;
         }
-        .card-date {
-          font-size: 0.8rem;
+        .card-mock-content {
+          padding: 1.5rem;
+        }
+        .mock-title {
           font-weight: 700;
-          text-transform: uppercase;
-          background: var(--primary);
-          width: fit-content;
-          padding: 0.3rem 0.85rem;
-          border-radius: 99px;
-          font-family: var(--font-heading);
-          letter-spacing: 0.03em;
+          font-size: 1.25rem;
+          margin-bottom: 0.5rem;
         }
-        .card-title {
-          font-size: 1.5rem;
-          font-family: var(--font-heading);
+        .mock-details {
+          font-size: 0.9rem;
+          color: var(--foreground-muted);
+        }
+        .secondary-card {
+          width: 280px;
+          height: 360px;
+          opacity: 0.5;
+          filter: blur(1px);
+        }
+        .card-1 {
+          z-index: 2;
+          transform: translate(60px, -40px) rotate(4deg);
+          background: #f1f5f9;
+        }
+        .card-2 {
+          z-index: 1;
+          transform: translate(-80px, 40px) rotate(-8deg);
+          background: #fffbeb;
         }
 
-        @media (max-width: 768px) {
-          .hero-title {
-            font-size: 2.25rem;
-          }
-          .featured-carousel {
+        @media (max-width: 1024px) {
+          .hero-container {
             grid-template-columns: 1fr;
+            text-align: center;
+            gap: 4rem;
           }
-          .organizer-cta {
+          .hero-content {
+            display: flex;
             flex-direction: column;
-            gap: 0.5rem;
+            align-items: center;
+          }
+          .hero-visual {
+            height: 400px;
+            width: 100%;
+          }
+          .hero-actions {
+            justify-content: center;
+          }
+          .hero-stats {
+            justify-content: center;
+          }
+        }
+        @media (max-width: 640px) {
+          .hero-title {
+            font-size: 2.75rem;
+          }
+          .hero-actions {
+            flex-direction: column;
+            width: 100%;
+          }
+          .main-card {
+            width: 260px;
+            height: 340px;
+          }
+          .secondary-card {
+            display: none;
           }
         }
       `}</style>
