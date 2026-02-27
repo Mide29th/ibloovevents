@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { Search } from 'lucide-react';
 
 export default function Navbar() {
@@ -8,8 +9,16 @@ export default function Navbar() {
     <nav className="glass sticky-nav">
       <div className="container nav-content">
         <div className="nav-left">
-          <Link href="/" className="logo">
-            IBLOOV
+          <Link href="/" className="logo-link">
+            <Image
+              src="/image/mainlogo.png"
+              alt="iBLOOV Logo"
+              width={40}
+              height={40}
+              className="logo-img"
+              priority
+            />
+            <span className="nav-beta-badge">BETA</span>
           </Link>
         </div>
 
@@ -25,6 +34,9 @@ export default function Navbar() {
         </div>
 
         <div className="nav-right">
+          <Link href="/dashboard" className="nav-link">
+            My Events
+          </Link>
           <Link href="/signin" className="nav-link">
             Sign In
           </Link>
@@ -39,7 +51,7 @@ export default function Navbar() {
           position: sticky;
           top: 0;
           z-index: 100;
-          height: 64px;
+          height: 68px;
           display: flex;
           align-items: center;
         }
@@ -49,10 +61,24 @@ export default function Navbar() {
           justify-content: space-between;
           width: 100%;
         }
-        .logo {
-          font-weight: 900;
-          font-size: 1.5rem;
-          letter-spacing: -0.05em;
+        .logo-link {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+        }
+        .logo-img {
+          height: 32px;
+          width: auto;
+        }
+        .nav-beta-badge {
+          background: var(--accent);
+          color: var(--foreground);
+          font-size: 0.55rem;
+          font-weight: 800;
+          padding: 2px 6px;
+          border-radius: 4px;
+          letter-spacing: 0.08em;
+          font-family: var(--font-heading);
         }
         .nav-center {
           flex: 1;
@@ -64,17 +90,20 @@ export default function Navbar() {
         .search-bar {
           display: flex;
           align-items: center;
-          background: #f3f3f3;
+          background: var(--muted);
+          border: 1px solid var(--border);
           border-radius: 9999px;
-          padding: 0.5rem 1rem;
+          padding: 0.55rem 1.25rem;
           width: 100%;
-          transition: background 0.2s ease;
+          transition: all 0.25s ease;
         }
         .search-bar:focus-within {
-          background: #eeeeee;
+          background: #ffffff;
+          border-color: var(--primary);
+          box-shadow: 0 0 0 3px rgba(0, 0, 210, 0.08);
         }
         .search-icon {
-          color: #666;
+          color: var(--secondary);
           margin-right: 0.5rem;
         }
         .search-input {
@@ -83,6 +112,7 @@ export default function Navbar() {
           outline: none;
           width: 100%;
           font-size: 0.9rem;
+          font-family: var(--font-body);
           color: var(--foreground);
         }
         .nav-right {
@@ -92,20 +122,23 @@ export default function Navbar() {
         }
         .nav-link {
           font-size: 0.95rem;
-          font-weight: 500;
-          color: var(--secondary);
+          font-weight: 600;
+          color: var(--foreground);
+          font-family: var(--font-heading);
           transition: color 0.2s ease;
+          position: relative;
         }
         .nav-link:hover {
-          color: var(--foreground);
+          color: var(--primary);
         }
         
         @media (max-width: 768px) {
           .nav-center {
-            display: none; /* Hide search on mobile, or move to drawer */
+            display: none;
           }
-          .logo {
-            font-size: 1.25rem;
+          .logo-img {
+            height: 32px;
+            width: 32px;
           }
           .nav-right {
             gap: 1rem;

@@ -1,5 +1,6 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import EventCard from './EventCard';
 
 const mockEvents = [
@@ -62,6 +63,22 @@ const mockEvents = [
 ];
 
 export default function EventFeed() {
+  const [events, setEvents] = useState(mockEvents);
+
+  useEffect(() => {
+    // Merge mock events with user created events from storage
+    const userEvents = JSON.parse(localStorage.getItem('user_events') || '[]');
+    // Map user events to match feed structure
+    const mappedUserEvents = userEvents.map((e: any) => ({
+      ...e,
+      date: e.displayDate,
+      image: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&q=80&w=800", // Default event image
+      price: e.price || 'Free'
+    }));
+
+    setEvents([...mappedUserEvents, ...mockEvents]);
+  }, []);
+
   return (
     <section className="feed-section">
       <div className="container">
@@ -76,7 +93,7 @@ export default function EventFeed() {
         </div>
 
         <div className="event-grid">
-          {mockEvents.map(event => (
+          {events.map(event => (
             <EventCard key={event.id} {...event} />
           ))}
         </div>
@@ -95,6 +112,18 @@ export default function EventFeed() {
         .section-title {
           font-size: 1.5rem;
           font-weight: 700;
+          font-family: var(--font-heading);
+          position: relative;
+        }
+        .section-title::after {
+          content: '';
+          position: absolute;
+          bottom: -6px;
+          left: 0;
+          width: 40px;
+          height: 3px;
+          background: var(--accent);
+          border-radius: 2px;
         }
         .filters {
           display: flex;
@@ -104,18 +133,23 @@ export default function EventFeed() {
           padding: 0.5rem 1.25rem;
           border-radius: 99px;
           font-size: 0.85rem;
-          font-weight: 500;
+          font-weight: 600;
           cursor: pointer;
-          background: #f3f3f3;
+          background: var(--muted);
           color: var(--secondary);
+          border: 1px solid var(--border);
           transition: all 0.2s ease;
+          font-family: var(--font-heading);
         }
         .filter-pill:hover {
-          background: #eeeeee;
+          background: rgba(0, 0, 210, 0.05);
+          color: var(--primary);
+          border-color: rgba(0, 0, 210, 0.2);
         }
         .filter-pill.active {
-          background: var(--foreground);
-          color: var(--background);
+          background: var(--primary);
+          color: #ffffff;
+          border-color: var(--primary);
         }
         .event-grid {
           display: grid;

@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { Zap, Wallet, BarChart3 } from 'lucide-react';
 
 export default function OrganizerSection() {
@@ -41,7 +42,7 @@ export default function OrganizerSection() {
           </div>
 
           <div className="box-footer">
-            <button className="button button-primary">Start Creating Now</button>
+            <Link href="/create" className="button cta-amber">Start Creating Now</Link>
           </div>
         </div>
       </div>
@@ -49,21 +50,24 @@ export default function OrganizerSection() {
       <style jsx>{`
         .organizer-section {
           padding: 6rem 0;
-          background: var(--muted);
+          background: var(--secondary-blue);
         }
         .organizer-box {
-          background: white;
+          background: rgba(255, 255, 255, 0.06);
+          border: 1px solid rgba(255, 255, 255, 0.1);
           padding: 4rem;
           border-radius: 32px;
           text-align: center;
-          border: 1px solid var(--border);
+          backdrop-filter: blur(12px);
         }
         .box-header h2 {
           font-size: 2.5rem;
           margin-bottom: 1rem;
+          color: #ffffff;
+          font-family: var(--font-heading);
         }
         .subtitle {
-          color: var(--secondary);
+          color: rgba(255, 255, 255, 0.7);
           font-size: 1.1rem;
           margin-bottom: 3rem;
         }
@@ -82,22 +86,41 @@ export default function OrganizerSection() {
         .icon-wrapper {
           width: 56px;
           height: 56px;
-          background: #f3f3f3;
+          background: var(--accent);
           border-radius: 16px;
           display: flex;
           align-items: center;
           justify-content: center;
           margin-bottom: 1.5rem;
-          color: var(--foreground);
+          color: var(--secondary-blue);
         }
         .feature-item h3 {
           font-size: 1.25rem;
           margin-bottom: 0.75rem;
+          color: #ffffff;
+          font-family: var(--font-heading);
         }
         .feature-item p {
-          color: var(--secondary);
+          color: rgba(255, 255, 255, 0.65);
           line-height: 1.5;
           font-size: 0.95rem;
+        }
+        .cta-amber {
+          background: var(--accent);
+          color: var(--foreground);
+          font-weight: 700;
+          font-family: var(--font-heading);
+          padding: 0.85rem 2rem;
+          border-radius: 99px;
+          border: none;
+          font-size: 1rem;
+          cursor: pointer;
+          transition: all 0.25s ease;
+        }
+        .cta-amber:hover {
+          background: var(--accent-soft);
+          transform: translateY(-2px);
+          box-shadow: 0 8px 24px rgba(241, 160, 0, 0.3);
         }
         
         @media (max-width: 960px) {

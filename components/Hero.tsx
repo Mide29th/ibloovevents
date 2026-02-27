@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import { ArrowRight } from 'lucide-react';
-import Image from 'next/image';
 import Link from 'next/link';
 
 const CITIES = [
@@ -54,24 +53,19 @@ export default function Hero() {
 
   useEffect(() => {
     const currentCity = CITIES[cityIndex];
-
     const typeSpeed = isDeleting ? 50 : 150;
     const pauseTime = 2000;
 
     const initialTimeout = setTimeout(() => {
       if (!isDeleting && displayText === currentCity) {
-        // Finished typing, wait before deleting
         setTimeout(() => setIsDeleting(true), pauseTime);
       } else if (isDeleting && displayText === "") {
-        // Finished deleting, move to next city
         setIsDeleting(false);
         setCityIndex((prev) => (prev + 1) % CITIES.length);
       } else {
-        // Typing or deleting
         const nextText = isDeleting
           ? currentCity.substring(0, displayText.length - 1)
           : currentCity.substring(0, displayText.length + 1);
-
         setDisplayText(nextText);
       }
     }, typeSpeed);
@@ -128,17 +122,19 @@ export default function Hero() {
           font-size: 3.5rem;
           line-height: 1.1;
           margin-bottom: 1.5rem;
+          font-family: var(--font-heading);
         }
         .highlight {
-          color: var(--secondary);
+          color: var(--accent);
           text-decoration: underline;
-          text-decoration-thickness: 2px;
+          text-decoration-color: var(--accent);
+          text-decoration-thickness: 3px;
           text-underline-offset: 8px;
         }
         .cursor {
           display: inline-block;
           font-weight: 100;
-          color: var(--secondary);
+          color: var(--accent);
           animation: blink 1s step-end infinite;
         }
         @keyframes blink {
@@ -156,10 +152,17 @@ export default function Hero() {
         .cta-link {
           display: flex;
           align-items: center;
-          gap: 0.25rem;
-          color: var(--foreground);
-          font-weight: 600;
-          border-bottom: 1px solid var(--foreground);
+          gap: 0.35rem;
+          color: var(--primary);
+          font-weight: 700;
+          font-family: var(--font-heading);
+          border-bottom: 2px solid var(--primary);
+          padding-bottom: 2px;
+          transition: color 0.2s, border-color 0.2s;
+        }
+        .cta-link:hover {
+          color: var(--accent);
+          border-color: var(--accent);
         }
         
         .featured-carousel {
@@ -180,10 +183,11 @@ export default function Hero() {
            overflow: hidden;
            aspect-ratio: 16/9;
            cursor: pointer;
-           transition: transform 0.3s ease;
+           transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
         .featured-card:hover {
           transform: scale(1.02);
+          box-shadow: 0 12px 32px rgba(0, 0, 210, 0.12);
         }
         .card-image-wrapper {
           width: 100%;
@@ -200,7 +204,7 @@ export default function Hero() {
           left: 0;
           right: 0;
           padding: 2rem;
-          background: linear-gradient(transparent, rgba(0,0,0,0.7));
+          background: linear-gradient(transparent, rgba(0, 0, 128, 0.75));
           color: white;
           display: flex;
           flex-direction: column;
@@ -208,16 +212,18 @@ export default function Hero() {
         }
         .card-date {
           font-size: 0.8rem;
-          font-weight: 600;
+          font-weight: 700;
           text-transform: uppercase;
-          background: rgba(255,255,255,0.2);
+          background: var(--primary);
           width: fit-content;
-          padding: 0.25rem 0.75rem;
+          padding: 0.3rem 0.85rem;
           border-radius: 99px;
-          backdrop-filter: blur(4px);
+          font-family: var(--font-heading);
+          letter-spacing: 0.03em;
         }
         .card-title {
           font-size: 1.5rem;
+          font-family: var(--font-heading);
         }
 
         @media (max-width: 768px) {

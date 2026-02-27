@@ -1,7 +1,6 @@
 'use client';
 
 import { MapPin, Users, BadgeCheck } from 'lucide-react';
-
 import Link from 'next/link';
 import Image from 'next/image';
 
@@ -72,10 +71,12 @@ export default function EventCard({
             overflow: hidden;
             transition: transform 0.2s ease, box-shadow 0.2s ease;
             cursor: pointer;
+            border: 1px solid var(--border);
           }
           .event-card:hover {
             transform: translateY(-4px);
-            box-shadow: 0 12px 24px rgba(0,0,0,0.05);
+            box-shadow: 0 12px 32px rgba(0, 0, 210, 0.1);
+            border-color: rgba(0, 0, 210, 0.15);
           }
           .image-container {
             position: relative;
@@ -96,27 +97,30 @@ export default function EventCard({
             top: 12px;
             left: 12px;
             background: white;
-            color: black;
-            padding: 4px 10px;
+            color: var(--primary);
+            padding: 5px 12px;
             border-radius: 8px;
             font-size: 0.75rem;
             font-weight: 700;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 210, 0.12);
+            font-family: var(--font-heading);
+            letter-spacing: 0.02em;
           }
           .price-pill {
             position: absolute;
             bottom: 12px;
             right: 12px;
-            background: rgba(0,0,0,0.8);
+            background: var(--primary);
             color: white;
-            padding: 4px 12px;
+            padding: 5px 14px;
             border-radius: 99px;
             font-size: 0.8rem;
-            font-weight: 600;
+            font-weight: 700;
             backdrop-filter: blur(4px);
+            font-family: var(--font-heading);
           }
           .card-content {
-            padding: 1rem 0.5rem;
+            padding: 1rem 0.75rem;
           }
           .event-title {
             font-size: 1.1rem;
@@ -125,6 +129,7 @@ export default function EventCard({
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
+            font-family: var(--font-heading);
           }
           .host-info {
             display: flex;
@@ -135,7 +140,7 @@ export default function EventCard({
             margin-bottom: 1rem;
           }
           .verified-icon {
-            color: #007AFF;
+            color: var(--primary);
           }
           .event-footer {
             display: flex;
@@ -155,7 +160,7 @@ export default function EventCard({
             width: 20px;
             height: 20px;
             border-radius: 50%;
-            background: #ddd;
+            background: var(--accent-soft);
             border: 2px solid white;
             margin-left: -6px;
           }

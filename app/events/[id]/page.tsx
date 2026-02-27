@@ -1,9 +1,8 @@
 'use client';
 
-import { useState } from 'react';
-import { ArrowLeft, Calendar, MapPin, Share2, Heart, Download } from 'lucide-react';
+import { useState, use } from 'react';
+import { ArrowLeft, Calendar, MapPin, Share2, Heart } from 'lucide-react';
 import Link from 'next/link';
-import { notFound } from 'next/navigation';
 
 // Mock data (replace with API call later)
 const EVENTS: Record<string, any> = {
@@ -39,8 +38,9 @@ const EVENTS: Record<string, any> = {
     }
 };
 
-export default function EventDetailsPage({ params }: { params: { id: string } }) {
-    const event = EVENTS[params.id];
+export default function EventDetailsPage({ params }: { params: Promise<{ id: string }> }) {
+    const { id } = use(params);
+    const event = EVENTS[id];
     const [showTickets, setShowTickets] = useState(false);
     const [selectedTicket, setSelectedTicket] = useState<string | null>(null);
 
@@ -48,7 +48,8 @@ export default function EventDetailsPage({ params }: { params: { id: string } })
         return (
             <div className="container" style={{ padding: '4rem 0', textAlign: 'center' }}>
                 <h2>Event not found</h2>
-                <Link href="/" className="button button-primary" style={{ marginTop: '1rem', display: 'inline-block' }}>Back Home</Link>
+                <p style={{ color: 'var(--secondary)', margin: '0.5rem 0 1.5rem' }}>Oops! Let&apos;s find you something amazing instead 😊</p>
+                <Link href="/" className="button button-primary" style={{ display: 'inline-block' }}>Back Home</Link>
             </div>
         );
     }
@@ -151,6 +152,10 @@ export default function EventDetailsPage({ params }: { params: { id: string } })
           color: var(--secondary);
           margin-bottom: 1.5rem;
           font-weight: 500;
+          transition: color 0.2s;
+        }
+        .back-link:hover {
+          color: var(--primary);
         }
         .event-grid {
           display: grid;
@@ -177,8 +182,8 @@ export default function EventDetailsPage({ params }: { params: { id: string } })
           gap: 0.5rem;
         }
         .icon-btn {
-          width: 40px;
-          height: 40px;
+          width: 42px;
+          height: 42px;
           border-radius: 50%;
           background: white;
           display: flex;
@@ -186,19 +191,26 @@ export default function EventDetailsPage({ params }: { params: { id: string } })
           justify-content: center;
           border: none;
           cursor: pointer;
-          transition: transform 0.2s;
+          transition: all 0.2s;
+          color: var(--foreground);
+          box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
         .icon-btn:hover {
           transform: scale(1.1);
+          color: var(--primary);
         }
         .event-title {
           font-size: 2.5rem;
           margin-bottom: 0.5rem;
           line-height: 1.1;
+          font-family: var(--font-heading);
         }
         .host {
           color: var(--secondary);
           margin-bottom: 2rem;
+        }
+        .host strong {
+          color: var(--foreground);
         }
         .meta-grid {
           display: grid;
@@ -212,48 +224,57 @@ export default function EventDetailsPage({ params }: { params: { id: string } })
         .meta-icon {
           width: 48px;
           height: 48px;
-          background: #f8f9fa;
+          background: rgba(0, 0, 210, 0.06);
           border-radius: 12px;
           display: flex;
           align-items: center;
           justify-content: center;
-          color: var(--foreground);
+          color: var(--primary);
+          flex-shrink: 0;
         }
         .meta-item h3 {
           font-size: 1rem;
           margin-bottom: 0.25rem;
+          font-family: var(--font-heading);
         }
         .sub-text {
           color: var(--secondary);
           font-size: 0.9rem;
         }
         .map-link {
-          color: #007AFF;
+          color: var(--primary);
           font-size: 0.9rem;
-          font-weight: 500;
+          font-weight: 600;
+        }
+        .map-link:hover {
+          text-decoration: underline;
         }
         .description h2 {
           font-size: 1.5rem;
           margin-bottom: 1rem;
+          font-family: var(--font-heading);
         }
         .description p {
-          line-height: 1.6;
+          line-height: 1.7;
           color: var(--secondary);
         }
         
         .ticket-card {
            position: sticky;
            top: 100px;
-           border: 1px solid #eee;
+           border: 1px solid var(--border);
            border-radius: 24px;
            padding: 1.5rem;
-           box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+           box-shadow: 0 4px 24px rgba(0, 0, 210, 0.06);
+           background: white;
         }
         .price-tag {
             font-size: 1.5rem;
-            font-weight: 700;
+            font-weight: 800;
             margin-bottom: 1.5rem;
             text-align: center;
+            font-family: var(--font-heading);
+            color: var(--foreground);
         }
         .full-width {
             width: 100%;
@@ -261,6 +282,7 @@ export default function EventDetailsPage({ params }: { params: { id: string } })
         .ticket-selection h3 {
             font-size: 1.1rem;
             margin-bottom: 1rem;
+            font-family: var(--font-heading);
         }
         .ticket-list {
             display: flex;
@@ -269,29 +291,39 @@ export default function EventDetailsPage({ params }: { params: { id: string } })
             margin-bottom: 1.5rem;
         }
         .ticket-option {
-            border: 1px solid #e0e0e0;
+            border: 1.5px solid var(--border);
             padding: 1rem;
             border-radius: 12px;
             cursor: pointer;
             transition: all 0.2s;
         }
         .ticket-option:hover {
-            border-color: var(--foreground);
+            border-color: var(--primary);
+            background: rgba(0, 0, 210, 0.02);
         }
         .ticket-option.selected {
-            border-color: var(--foreground);
-            background: #f8f9fa;
+            border-color: var(--primary);
+            background: rgba(0, 0, 210, 0.04);
             border-width: 2px;
+            box-shadow: 0 0 0 3px rgba(0, 0, 210, 0.08);
         }
         .ticket-header {
             display: flex;
             justify-content: space-between;
             font-weight: 600;
             margin-bottom: 0.25rem;
+            font-family: var(--font-heading);
+        }
+        .ticket-header .price {
+            color: var(--primary);
         }
         .perks {
             font-size: 0.8rem;
             color: var(--secondary);
+        }
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
         }
 
         @media (max-width: 900px) {
@@ -305,7 +337,7 @@ export default function EventDetailsPage({ params }: { params: { id: string } })
                 right: 0;
                 background: white;
                 border-radius: 24px 24px 0 0;
-                box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
+                box-shadow: 0 -4px 24px rgba(0, 0, 210, 0.1);
                 z-index: 100;
                 border: none;
                 top: auto;

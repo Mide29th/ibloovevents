@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-    title: "Ibloov Events | Discover & Create Events",
-    description: "The hyper-minimalist events platform for Nigeria. Search concerts, parties, workshops and more.",
+    title: "iBLOOV Events | Discover & Create Amazing Events",
+    description: "Technology that makes Africa smile. Discover concerts, parties, workshops and create unforgettable events with iBLOOV.",
 };
 
 export default function RootLayout({
@@ -13,6 +13,14 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en">
+            <head>
+                <link rel="preconnect" href="https://fonts.googleapis.com" />
+                <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+                <link
+                    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800;900&family=Open+Sans:wght@400;500;600;700&display=swap"
+                    rel="stylesheet"
+                />
+            </head>
             <body>{children}</body>
         </html>
     );
